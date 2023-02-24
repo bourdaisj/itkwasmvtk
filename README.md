@@ -1,3 +1,4 @@
+## Getting started
 ```bash
 # build Dockerfile
 docker build -f Dockerfile -t plus/emscripten-vtk .
@@ -8,3 +9,6 @@ npx itk-wasm --image plus/emscripten-vtk build -- -DVTK_DIR=/VTK-build -DCMAKE_C
 npx itk-wasm --image plus/emscripten-vtk-debug build -- -DVTK_DIR=/VTK-build -DCMAKE_CXX_FLAGS='-Os' -DCMAKE_BUILD_TYPE=Debug
 npm run dev
 ```
+
+## Resources
+https://wasm.itk.org/tutorial/debugging

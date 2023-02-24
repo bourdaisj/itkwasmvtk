@@ -12,9 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "@kitware/vtk.js": "^26.5.5",
-    "itk-image-io": "^1.0.0-b.70",
-    "itk-mesh-io": "^1.0.0-b.70",
-    "itk-wasm": "^1.0.0-b.70",
+    "itk-image-io": "^1.0.0-b.80",
+    "itk-mesh-io": "^1.0.0-b.80",
+    "itk-wasm": "^1.0.0-b.80",
     "promise-file-reader": "^1.0.3"
   },
   "devDependencies": {

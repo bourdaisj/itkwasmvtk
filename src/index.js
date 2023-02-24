@@ -14,6 +14,8 @@ window.addEventListener('load', () => {
     const dataTransfer = event.dataTransfer;
     const files = event.target.files || dataTransfer.files;
     const file = files[0];
+
+    console.log({ file });
   
     const polyData = await convertToPolyData(file);
   

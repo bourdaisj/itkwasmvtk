@@ -7,7 +7,7 @@ ARG CMAKE_BUILD_TYPE=Release
 
 WORKDIR /
 
-ENV VTK_GIT_TAG 285daeedd58eb890cb90d6e907d822eea3d2d092
+ENV VTK_GIT_TAG f2c452c9c42005672a3f3ed9218dd9a7fecca79a
 RUN git clone https://github.com/Kitware/VTK.git && \
   cd VTK && \
   git checkout ${VTK_GIT_TAG} && \
@@ -33,6 +33,7 @@ RUN git clone https://github.com/Kitware/VTK.git && \
     -DVTK_MODULE_ENABLE_VTK_InteractionWidgets=WANT \
     -DVTK_MODULE_ENABLE_VTK_RenderingContext2D=DONT_WANT \
     -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=DONT_WANT \
+    -DVTK_MODULE_ENABLE_VTK_RenderingLICOpenGL2=DONT_WANT \
     -DVTK_LEGACY_REMOVE:BOOL=ON \
     -DVTK_OPENGL_USE_GLES:BOOL=ON \
     -DVTK_USE_SDL2:BOOL=ON \
@@ -45,6 +46,7 @@ RUN git clone https://github.com/Kitware/VTK.git && \
     -DVTK_IGNORE_CMAKE_CXX11_CHECKS:BOOL=ON \
     -DVTK_MODULE_ENABLE_VTK_FiltersGeometry:STRING=YES \
     -DVTK_MODULE_ENABLE_VTK_hdf5:STRING=NO \
+    -DVTK_MODULE_ENABLE_VTK_libproj:STRING=NO \
     -DH5_HAVE_GETPWUID:BOOL=OFF \
     ../VTK && \
   ninja && \

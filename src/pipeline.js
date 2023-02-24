@@ -1,13 +1,12 @@
-import { runPipelineBrowser, IOTypes, InterfaceTypes, runPipeline } from "itk-wasm";
+import { runPipeline, IOTypes, InterfaceTypes } from "itk-wasm";
 import { readAsArrayBuffer } from "promise-file-reader";
+import vtkXMLPolyDataReader from "@kitware/vtk.js/IO/XML/XMLPolyDataReader";
 
 export async function convertToPolyData(file) {
+    console.debug("convertToPolyData");
     return await readAsArrayBuffer(file).then((arrayBuffer) => {
       const args = [file.name, file.name + ".output.json"];
 
-      console.debug({ args });
-
-      const pipelineOutputs = [{ path: args[1], type: InterfaceTypes.PolyData }];
       const pipelineInputs = [
         {
           path: args[0],
@@ -15,14 +14,30 @@ export async function convertToPolyData(file) {
           data: new Uint8Array(arrayBuffer),
         },
       ];
-      return runPipelineBrowser(
+      
+      const pipelineOutputs = [
+        { 
+          path: args[1], 
+          type: IOTypes.Binary, 
+        }
+      ];
+
+      console.debug({
+        args,
+        pipelineInputs,
+        pipelineOutputs,
+      });
+
+      return runPipeline(
         false,
         "convertToPolyData",
         args,
         pipelineOutputs,
         pipelineInputs
-      ).then(({ outputs, webWorker }) => {
-        return window.vtk(outputs[0].data);
+      ).then(({ outputs }) => {
+        const reader = vtkXMLPolyDataReader.newInstance();
+        reader.parseAsArrayBuffer(outputs[0].data);
+        return reader.getOutputData();
       });
     });
   }

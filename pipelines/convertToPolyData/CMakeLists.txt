@@ -9,7 +9,7 @@ set(itk_components
 )
 
 find_package(VTK REQUIRED
-  COMPONENTS IOExport IOXML IOLegacy FiltersGeometry
+  COMPONENTS IOExport IOXML IOLegacy FiltersGeometry FiltersGeneral
 )
 
 find_package(ITK REQUIRED 
