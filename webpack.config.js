@@ -5,7 +5,7 @@ const url = require('url')
 // const __filename = url.fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
 
-const entry = path.join(__dirname, "src", "index.js");
+const entry = path.join(__dirname, "src", "index.ts");
 const outputPath = path.join(__dirname, "./dist");
 
 function makePattern(fileName) {

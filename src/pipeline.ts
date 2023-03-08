@@ -4,58 +4,54 @@ import runPipelineEmscripten from "./wasm-gen/runPipelineEmscripten";
 import { readAsArrayBuffer } from "promise-file-reader";
 import vtkXMLPolyDataReader from "@kitware/vtk.js/IO/XML/XMLPolyDataReader";
 
-export async function convertToPolyData(file) {
-    console.debug("convertToPolyData");
-    return await readAsArrayBuffer(file).then((arrayBuffer) => {
-      const args = [file.name, file.name + ".output.json"];
+export async function convertToPolyData(files: File[]) {
+    console.debug("convertToPolyData", files);
+    const file = files[0];
 
-      const pipelineInputs = [
-        {
-          path: args[0],
-          type: IOTypes.Binary,
-          data: new Uint8Array(arrayBuffer),
-        },
-      ];
-      
-      const pipelineOutputs = [
-        { 
-          path: args[1], 
-          type: IOTypes.Binary, 
-        }
-      ];
+    const fileArrayBuffer = await readAsArrayBuffer(file);
+    const args = [file.name, file.name + ".output.json"];
 
-      console.debug({
-        args,
-        pipelineInputs,
-        pipelineOutputs,
-      });
+    const pipelineInputs = [
+      {
+        path: args[0],
+        type: IOTypes.Binary,
+        data: new Uint8Array(fileArrayBuffer),
+      },
+    ];
+    
+    const pipelineOutputs = [
+      { 
+        path: args[1],
+        type: IOTypes.Binary, 
+      }
+    ];
 
-      return runPipeline(
-        false,
-        "convertToPolyData",
-        args,
-        pipelineOutputs,
-        pipelineInputs
-      ).then(({ outputs }) => {
-        const reader = vtkXMLPolyDataReader.newInstance();
-        reader.parseAsArrayBuffer(outputs[0].data);
-        return reader.getOutputData();
-      });
-    });
+    const pipelineResult = await runPipeline(
+      false,
+      "convertToPolyData",
+      args,
+      pipelineOutputs,
+      pipelineInputs
+    )
+
+    const reader = vtkXMLPolyDataReader.newInstance();
+    reader.parseAsArrayBuffer(pipelineResult.outputs[0].data as Uint8Array);
+    return reader.getOutputData();
   }
 
-  export async function convertEnsightToPolyData(files) {
+  export async function convertEnsightToPolyData(files: File[]) {
+    console.debug("convertEnsightToPolyData", files);
+
     const caseFile = files.find((file) => file.name.includes('case'));
   
-    console.debug("convertEnsightToPolyData");
     const pipelineModule = await loadPipelineModule("convertEnsightToPolyData");
   
+    // Write every file to the WASM module virtual filesystem
     files.filter((file) => !file.name.includes('case')).forEach(async (file) => {
       const fileArrayBuffer = await readAsArrayBuffer(file);
       console.log({ filepath: file.name });
       pipelineModule.fs_writeFile(file.name, new Uint8Array(fileArrayBuffer));
     });
-  
   
     const caseFileArrayBuffer = await readAsArrayBuffer(caseFile);
     const args = [caseFile.name, caseFile.name + ".output.json"];
@@ -84,18 +80,6 @@ export async function convertToPolyData(file) {
     
     const reader = vtkXMLPolyDataReader.newInstance();
     reader.parseAsArrayBuffer(result.outputs[0].data);
+
     return reader.getOutputData();
-  
-      // return runPipeline(
-      //   false,
-      //   "convertEnsightToPolyData",
-      //   args,
-      //   pipelineOutputs,
-      //   pipelineInputs
-      // ).then(({ outputs }) => {
-      //   const reader = vtkXMLPolyDataReader.newInstance();
-      //   reader.parseAsArrayBuffer(outputs[0].data);
-      //   return reader.getOutputData();
-      // });
-    // });
   }
