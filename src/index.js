@@ -5,6 +5,7 @@ import vtkMapper from "@kitware/vtk.js/Rendering/Core/Mapper.js";
 import vtkFullScreenRenderWindow from "@kitware/vtk.js/Rendering/Misc/FullScreenRenderWindow.js";
 
 import {
+  convertEnsightToPolyData,
   convertToPolyData,
 } from "./pipeline.js";
 console.log('loading')
@@ -13,11 +14,12 @@ window.addEventListener('load', () => {
   async function processFile(event) {
     const dataTransfer = event.dataTransfer;
     const files = event.target.files || dataTransfer.files;
-    const file = files[0];
+    // const file = files[0];
 
-    console.log({ file });
+    // console.log({ file });
   
-    const polyData = await convertToPolyData(file);
+    // const polyData = await convertToPolyData(file);
+    const polyData = await convertEnsightToPolyData(Array.from(files));
   
     createViewer(polyData);
   }

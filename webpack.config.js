@@ -45,7 +45,10 @@ module.exports = {
       },
     },
     module: {
-      rules: [{ test: /\.js$/, loader: "babel-loader" }],
+      rules: [
+        { test: /\.js$/, loader: "babel-loader" },
+        { test: /\.tsx?$/, use: 'ts-loader', exclude: /node_modules/ },
+      ],
     },
     plugins: [
       new CopyPlugin({
@@ -61,6 +64,7 @@ module.exports = {
             to: path.join(__dirname, "dist", "itk", "web-workers"),
           },
           ...makePattern("convertToPolyData"),
+          ...makePattern("convertEnsightToPolyData"),
           {
             from: path.join(__dirname, 'node_modules', 'itk-mesh-io'),
             to: path.join(__dirname, 'dist', 'itk', 'mesh-io')
@@ -74,6 +78,7 @@ module.exports = {
         '../itkConfig.js': path.resolve(__dirname, 'itkConfig.js'),
         '../../itkConfig.js': path.resolve(__dirname, 'itkConfig.js'),
       },
+      extensions: ['.tsx', '.ts', '.js'],
     },
     performance: {
       maxAssetSize: 10000000,
