@@ -82,7 +82,7 @@ RUN chmod -R 777 /emsdk/upstream/emscripten/cache
 
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
-ARG IMAGE=plus/emscripten-vtk-debug
+ARG IMAGE=vtk-wasm/emscripten-vtk-debug
 ARG VERSION=latest
 ARG VCS_REF
 ARG VCS_URL
