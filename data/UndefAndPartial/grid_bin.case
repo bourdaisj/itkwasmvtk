@@ -1,0 +1,9 @@
+FORMAT
+type: ensight gold
+GEOMETRY
+model: grid_bin.geo
+VARIABLE
+scalar per element: density grid_bin.density
+scalar per element: mass grid_bin.mass
+scalar per node: temp grid_bin.temp
+scalar per node: pres grid_bin.pres
