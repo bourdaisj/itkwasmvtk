@@ -7,7 +7,8 @@ ARG CMAKE_BUILD_TYPE=Release
 
 WORKDIR /
 
-ENV VTK_GIT_TAG f2c452c9c42005672a3f3ed9218dd9a7fecca79a
+# nightly datestamp 07 Mar 2023
+ENV VTK_GIT_TAG 187b22be8a381dd6bd92fc1301276c603ba0e5e0
 RUN git clone https://github.com/Kitware/VTK.git && \
   cd VTK && \
   git checkout ${VTK_GIT_TAG} && \
@@ -22,32 +23,11 @@ RUN git clone https://github.com/Kitware/VTK.git && \
     -DCMAKE_INSTALL_PREFIX:PATH=/install-prefix \
     -DVTK_ENABLE_LOGGING:BOOL=OFF \
     -DVTK_ENABLE_WRAPPING:BOOL=OFF \
-    -DVTK_ENABLE_KITS:BOOL=OFF \
-    -DVTK_GROUP_ENABLE_MPI=NO \
-    -DVTK_GROUP_ENABLE_Qt=NO \
-    -DVTK_GROUP_ENABLE_Rendering=WANT \
-    -DVTK_GROUP_ENABLE_StandAlone=WANT \
-    -DVTK_GROUP_ENABLE_Views=NO \
-    -DVTK_GROUP_ENABLE_Web=NO \
-    -DVTK_MODULE_ENABLE_VTK_InteractionStyle=WANT \
-    -DVTK_MODULE_ENABLE_VTK_InteractionWidgets=WANT \
-    -DVTK_MODULE_ENABLE_VTK_RenderingContext2D=DONT_WANT \
-    -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=DONT_WANT \
-    -DVTK_MODULE_ENABLE_VTK_RenderingLICOpenGL2=DONT_WANT \
-    -DVTK_LEGACY_REMOVE:BOOL=ON \
-    -DVTK_OPENGL_USE_GLES:BOOL=ON \
-    -DVTK_USE_SDL2:BOOL=ON \
-    -DOPENGL_INCLUDE_DIR:PATH=/emsdk/upstream/emscripten/system/include/ \
-    -DOPENGL_EGL_INCLUDE_DIR:PATH=/emsdk/upstream/emscripten/system/include/ \
-    -DOPENGL_GLES2_INCLUDE_DIR:PATH=/emsdk/upstream/emscripten/system/include/ \
-    -DOPENGL_GLES3_INCLUDE_DIR:PATH=/emsdk/upstream/emscripten/system/include/ \
-    -DVTK_NO_PLATFORM_SOCKETS:BOOL=ON \
-    -DBUILD_TESTING:BOOL=OFF \
-    -DVTK_IGNORE_CMAKE_CXX11_CHECKS:BOOL=ON \
-    -DVTK_MODULE_ENABLE_VTK_FiltersGeometry:STRING=YES \
     -DVTK_MODULE_ENABLE_VTK_hdf5:STRING=NO \
-    -DVTK_MODULE_ENABLE_VTK_libproj:STRING=NO \
-    -DH5_HAVE_GETPWUID:BOOL=OFF \
+    -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2:STRING=DONT_WANT \
+    -DVTK_MODULE_ENABLE_VTK_RenderingLICOpenGL2:STRING=DONT_WANT \
+    -DVTK_MODULE_ENABLE_VTK_RenderingCellGrid:STRING=NO \
+    -DVTK_MODULE_ENABLE_VTK_sqlite:STRING=NO \
     ../VTK && \
   ninja && \
     find . -name '*.o' -delete && \
