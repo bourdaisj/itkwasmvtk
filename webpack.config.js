@@ -65,6 +65,7 @@ module.exports = {
           },
           ...makePattern("convertToPolyData"),
           ...makePattern("convertEnsightToPolyData"),
+          ...makePattern("convertUGToPolyData"),
           {
             from: path.join(__dirname, 'node_modules', 'itk-mesh-io'),
             to: path.join(__dirname, 'dist', 'itk', 'mesh-io')

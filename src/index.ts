@@ -7,6 +7,7 @@ import vtkFullScreenRenderWindow from "@kitware/vtk.js/Rendering/Misc/FullScreen
 import {
   convertEnsightToPolyData,
   convertToPolyData,
+  convertUGToPolyData,
 } from "./pipeline";
 import vtkPolyData from "@kitware/vtk.js/Common/DataModel/PolyData.js";
 
@@ -16,7 +17,8 @@ let selectedPipeline: PipelineName = "convertToPolyData";
 
 const pipelines = {
   convertEnsightToPolyData,
-  convertToPolyData
+  convertToPolyData,
+  convertUGToPolyData,
 };
 
 const createViewer = function createViewer(polyData: vtkPolyData) {
